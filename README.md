@@ -11,9 +11,11 @@ The project requires node version > 10.0.
 npm install
 ```
 
+Set you `env.json` file using `env.example.json` template.
+
 The run :
 ```
-node import.js {YOUR_SNCF_TOKEN}
+node src/import.js
 ```
 
 ## Todo
@@ -21,5 +23,5 @@ node import.js {YOUR_SNCF_TOKEN}
 - [x] Loop through SNCF disruptions.
 - [ ] Create ElasticSearch mapping.
 - [ ] Insert disruptions in ElasticSearch.
-- [ ] Create environment file.
+- [x] Create environment file.
 - [ ] Visualize in Kibana.

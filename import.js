@@ -1,11 +1,12 @@
 const https = require('https');
-const datetime = require('date-and-time');
+const moment = require('moment');
+const env = require('../env.json');
 
-let token = process.argv[2];
+let token = env.sncf_api_key;
 let api_url = "api.sncf.com";
 let api_date_format = "YYYYMMDDTHHmmss";
-let today = new Date().setHours(0,0,0,0);
-let yesterday = datetime.addDays(new Date(), -1).setHours(0,0,0,0);
+let today = moment({hour: 0, minute: 0, seconds: 0, milliseconds: 0});
+let yesterday = moment({hour: 0, minute: 0, seconds: 0, milliseconds: 0}).add(-1, 'days');
 
 /**
  * Main. Imports disruptions for ýesterday day into elasticsearch.
@@ -91,10 +92,7 @@ function getNextPage(payload) {
  * @param {Object} disruption
  */
 function disruptionFilter(disruption) {
-    let beginDate = disruption.application_periods[0].begin;
-    beginDate = datetime.parse(beginDate, api_date_format);
-    let endDate = disruption.application_periods[0].end;
-    endDate = datetime.parse(endDate, api_date_format);
+    let beginDate = moment(disruption.application_periods[0].begin, api_date_format);
     
-    return disruption.status != 'active' && beginDate >= yesterday && beginDate < today;
+    return disruption.status != 'active' && beginDate.isAfter(yesterday) && beginDate.isBefore(today);
 }
