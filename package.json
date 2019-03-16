@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "moment": "^2.24.0"
+    "@types/node": "^11.11.3",
+    "moment": "^2.24.0",
+    "typescript": "^3.3.3333"
   }
 }
