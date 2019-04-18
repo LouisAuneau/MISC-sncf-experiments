@@ -11,14 +11,14 @@ export class SNCFStopDisruption {
     arrival_status: string;
 }
 
-interface SNCFStopPoint {
+export interface SNCFStopPoint {
     name: string;
     coord: SNCFCoordinates;
     label: string;
     id: string;
 }
 
-interface SNCFCoordinates {
+export interface SNCFCoordinates {
     lat: string;
     lon: string;
 }

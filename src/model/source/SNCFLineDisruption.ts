@@ -12,22 +12,22 @@ export class SNCFLineDisruption {
     impacted_objects: SNCFImpactedObject[];
 }
 
-interface SNCFSeverity {
+export interface SNCFSeverity {
     color: string;
     priority: number;
     name: string;
     effect: string;
 }
 
-interface SNCFApplicationPeriod {
-    begin: string;
-    end: string;
+export interface SNCFApplicationPeriod {
+    begin: string; // YYYYMMDDTHHmmss
+    end: string; // YYYYMMDDTHHmmss
 }
 
-interface SNCFMessage {
+export interface SNCFMessage {
     text: string;
 }
 
-interface SNCFImpactedObject {
+export interface SNCFImpactedObject {
     impacted_stops: SNCFStopDisruption[];
 }

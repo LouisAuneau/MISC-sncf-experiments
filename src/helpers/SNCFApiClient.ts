@@ -1,12 +1,13 @@
-import env from "../env.json";
+import env from "../../env.json";
 import * as https from "https";
 import * as fs from "fs";
-import { SNCFDisruptions } from "./model/SNCFDisruptions";
+import { SNCFDisruptions } from "../model/source/SNCFDisruptions";
 
 export class SNCFApiClient {
 
     api_url: string = "api.sncf.com";
     api_token: string = env.sncf_api_key;
+    static dateformat: string = "YYYYMMDDTHHmmss";
 
     getDisruptions(page: number = 0): Promise<SNCFDisruptions> {
         var options = {

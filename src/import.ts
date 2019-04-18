@@ -1,17 +1,25 @@
-import { SNCFApiClient } from "./SNCFApiClient";
-import { SNCFLineDisruption } from "./model/SNCFLineDisruption";
+import { SNCFApiClient } from "./helpers/SNCFApiClient";
+import { SNCFLineDisruption } from "./model/source/SNCFLineDisruption";
+import * as elasticsearch from "elasticsearch";
+import env from "../env.json";
+import { DisruptionTarget } from "./model/target/DisruptionTarget";
+import { SNCFDisruptions } from "./model/source/SNCFDisruptions";
 
 main();
 async function main() {
     let sncfApiClient = new SNCFApiClient();
+    let elasticsearchClient = new elasticsearch.Client({
+        host: env.elasticsearch_host,
+        log: "trace"
+    });
     let page: number|boolean = 0;
-    let disruptions: SNCFLineDisruption[] = [];
+    let disruptions: DisruptionTarget[] = [];
     
     do {
-        let pageDisruptions = await sncfApiClient.getDisruptions()
+        let pageDisruptions: SNCFDisruptions = await sncfApiClient.getDisruptions(<number> page)
         page = pageDisruptions.getNextPage();
-        disruptions.concat(pageDisruptions.disruptions);
+        disruptions = disruptions.concat(pageDisruptions.getDisruptions());
 
-        console.log(pageDisruptions.disruptions.length + " disruptions retrieved.");
+        console.log(disruptions.length + " disruptions retrieved at page " + page + ".");
     } while(page);
 }
