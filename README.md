@@ -9,19 +9,28 @@ The project requires node version > 10.0.
 
 ```
 npm install
+npm install -g typescript
 ```
 
-Set you `env.json` file using `env.example.json` template.
-
-The run :
+Compile the project :
 ```
-node src/import.js
+tsc
+```
+
+Set you `env.json` file using `env.example.json` template. And setup your elasticsearch cluster with :
+```
+node dist/src/setup.js
+```
+
+Then run to import disruptions from the day set in env.json :
+```
+node dist/src/import.js
 ```
 
 ## Todo
 
 - [x] Loop through SNCF disruptions.
-- [ ] Create ElasticSearch mapping.
+- [x] Create ElasticSearch mapping.
 - [ ] Insert disruptions in ElasticSearch.
 - [x] Create environment file.
 - [ ] Visualize in Kibana.
