@@ -1,4 +1,4 @@
-import { IndicesPutTemplateParams } from "elasticsearch";
+import { IndicesPutTemplateParams, Client } from "elasticsearch";
 import { DisruptionTarget } from "./DisruptionTarget";
 
 export class ElasticsearchDisruption implements DisruptionTarget {
@@ -9,10 +9,7 @@ export class ElasticsearchDisruption implements DisruptionTarget {
     station: string;
     delay: number;
     cause: string;
-
-    loadDisruptions(disruptions: DisruptionTarget[]): void {
-        throw new Error("Method not implemented.");
-    }
+    deleted: boolean;
 
     static template: IndicesPutTemplateParams = {
         name: "disruptions-*",
@@ -25,8 +22,7 @@ export class ElasticsearchDisruption implements DisruptionTarget {
             mappings: {
                 properties: {
                     datetime: {
-                        type: "date",
-                        format: "yyyyMMdd HHmmss"
+                        type: "date"
                     },
                     day_of_week: {
                         type: "keyword"
@@ -42,6 +38,9 @@ export class ElasticsearchDisruption implements DisruptionTarget {
                     },
                     cause: {
                         "type": "text"
+                    },
+                    deleted: {
+                        "type": "boolean"
                     }
                 }
             }

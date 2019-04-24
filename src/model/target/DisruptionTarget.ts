@@ -6,6 +6,6 @@ export interface DisruptionTarget {
     location: ElasticsearchCoordinates;
     station: string;
     delay: number; // In minutes
-
-    loadDisruptions(disruptions: DisruptionTarget[]): void;
+    cause: string;
+    deleted: boolean;
 }

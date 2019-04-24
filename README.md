@@ -31,6 +31,8 @@ node dist/src/import.js
 
 - [x] Loop through SNCF disruptions.
 - [x] Create ElasticSearch mapping.
-- [ ] Insert disruptions in ElasticSearch.
+- [x] Insert disruptions in ElasticSearch.
 - [x] Create environment file.
 - [ ] Visualize in Kibana.
+- [ ] Fix bug with delay overlapping two days.
+- [ ] Fix bug with undefined `base_departure_time`.

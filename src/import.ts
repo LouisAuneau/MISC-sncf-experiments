@@ -4,22 +4,24 @@ import * as elasticsearch from "elasticsearch";
 import env from "../env.json";
 import { DisruptionTarget } from "./model/target/DisruptionTarget";
 import { SNCFDisruptions } from "./model/source/SNCFDisruptions";
+import { ElasticsearchHelper } from "./helpers/ElasticSearchHelper";
+import { ElasticsearchDisruption } from "./model/target/ElasticsearchDisruption";
 
 main();
 async function main() {
     let sncfApiClient = new SNCFApiClient();
-    let elasticsearchClient = new elasticsearch.Client({
-        host: env.elasticsearch_host,
-        log: "trace"
-    });
+    let elasticSearchHelper = new ElasticsearchHelper();
     let page: number|boolean = 0;
-    let disruptions: DisruptionTarget[] = [];
     
     do {
         let pageDisruptions: SNCFDisruptions = await sncfApiClient.getDisruptions(<number> page)
         page = pageDisruptions.getNextPage();
-        disruptions = disruptions.concat(pageDisruptions.getDisruptions());
+        let disruptions: DisruptionTarget[] = pageDisruptions.getDisruptions();
 
-        console.log(disruptions.length + " disruptions retrieved at page " + page + ".");
+        if(disruptions.length > 0) {
+            elasticSearchHelper.insertBulk(<ElasticsearchDisruption[]> disruptions);
+            console.log(disruptions.length + " disruptions retrieved at page " + page + ".");
+            disruptions = [];
+        }
     } while(page);
 }

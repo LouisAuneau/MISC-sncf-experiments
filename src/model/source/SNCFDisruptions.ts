@@ -21,11 +21,20 @@ export class SNCFDisruptions implements DisruptionSource {
 
         sncfStopDisruptions.forEach((sncfStopDisruption: SNCFStopDisruption) => {
             let disruption = new ElasticsearchDisruption();
+
             let base_departure_datetime = moment(this.extractedDate.format("YYYYMMDD") + " " + sncfStopDisruption.base_departure_time, "YYYYMMDD HHmmss");
             let actual_departure_datetime = moment(this.extractedDate.format("YYYYMMDD") + " " + sncfStopDisruption.amended_departure_time, "YYYYMMDD HHmmss");
             disruption.datetime = base_departure_datetime.toDate();
             disruption.day_of_week = base_departure_datetime.format('ddd');
-            disruption.delay = actual_departure_datetime.diff(base_departure_datetime, "minutes");
+
+            if(sncfStopDisruption.departure_status == 'deleted') {
+                disruption.deleted = true;
+                disruption.delay = 0;
+            } else {
+                disruption.deleted = false;
+                disruption.delay = actual_departure_datetime.diff(base_departure_datetime, "minutes");
+            }
+
             disruption.location = {
                 lat: parseFloat(sncfStopDisruption.stop_point.coord.lat),
                 lon: parseFloat(sncfStopDisruption.stop_point.coord.lon)
@@ -33,10 +42,9 @@ export class SNCFDisruptions implements DisruptionSource {
             disruption.station = sncfStopDisruption.stop_point.name;
             disruption.cause = sncfStopDisruption.cause;
 
-            disruptions.push(disruption);
+            disruptions.push(<DisruptionTarget> disruption);
         });
 
-        console.log(disruptions.length);
         return disruptions;
     }
 
