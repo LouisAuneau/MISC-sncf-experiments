@@ -47,5 +47,5 @@ Here is a quick overview of what is possible :
 - [ ] Fix bug with delay overlapping two days and undefined `base_departure_time`.
 - [ ] List all trains running
 - [ ] Visualize figures relative to train frequency to better grasp which lines have highest disruption rates.
-- [ ] Generate dataset of trains label by if they was a disruption or not.
+- [ ] Generate dataset of trains labeled by if there was a disruption or not.
 - [ ] Build logistic regression model to get disruptions contributing factors and predict disruptions.
